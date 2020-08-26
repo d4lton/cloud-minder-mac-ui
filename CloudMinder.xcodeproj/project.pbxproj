@@ -12,6 +12,7 @@
 		371B140D24F593AF00E12677 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B140C24F593AF00E12677 /* Assets.xcassets */; };
 		371B141024F593AF00E12677 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B140F24F593AF00E12677 /* Preview Assets.xcassets */; };
 		371B141324F593AF00E12677 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 371B141124F593AF00E12677 /* Main.storyboard */; };
+		371B142024F5CE2600E12677 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371B141C24F5C71F00E12677 /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,8 @@
 		371B141224F593AF00E12677 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		371B141424F593AF00E12677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		371B141524F593AF00E12677 /* CloudMinder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudMinder.entitlements; sourceTree = "<group>"; };
+		371B141C24F5C71F00E12677 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		371B141E24F5C7A400E12677 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				371B142024F5CE2600E12677 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +45,7 @@
 			children = (
 				371B140724F593AE00E12677 /* CloudMinder */,
 				371B140624F593AE00E12677 /* Products */,
+				371B141B24F5C71F00E12677 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +77,15 @@
 				371B140F24F593AF00E12677 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		371B141B24F5C71F00E12677 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				371B141E24F5C7A400E12677 /* NotificationCenter.framework */,
+				371B141C24F5C71F00E12677 /* UserNotifications.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
