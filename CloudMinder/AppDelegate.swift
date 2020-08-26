@@ -111,6 +111,36 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         }
     }
     
+    func showActivityIcon(percent: Double) {
+        DispatchQueue.main.async {
+            let level = Int(percent) / 10
+            print("activity level: \(level)")
+            switch (level) {
+            case 0:
+                self.statusBarItem.button!.image = NSImage(named: "CloudIdle")
+                break
+            case 1:
+                self.statusBarItem.button!.image = NSImage(named: "CloudOne")
+                break
+            case 2:
+                self.statusBarItem.button!.image = NSImage(named: "CloudTwo")
+                break
+            case 3:
+                self.statusBarItem.button!.image = NSImage(named: "CloudThree")
+                break
+            case 4:
+                self.statusBarItem.button!.image = NSImage(named: "CloudFour")
+                break
+            case 5:
+                self.statusBarItem.button!.image = NSImage(named: "CloudFive")
+                break
+            default:
+                self.statusBarItem.button!.image = NSImage(named: "CloudSix")
+                break
+            }
+        }
+    }
+    
     func showNotification(message: String) {
         let now = Date()
         if (lastNotification != nil) {
@@ -138,15 +168,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                 if error != nil {
                     self.showOffIcon()
                 } else {
-                    DispatchQueue.main.async {
-                        self.showNormalIcon()
-                    }
+                    self.showNormalIcon()
                     let status = String(data: data!, encoding: .utf8)?.convertToDictionary()
                     print("\(status)")
                     if (status != nil) {
                         let hostname = status!["hostname"] as! String
                         let hours = status!["uptime"] as! Double / 3600.0
                         let loadpercent = status!["loadpercent"] as! Double
+                        // self.showActivityIcon(percent: loadpercent)
                         print("up hours: \(hours), loadpercent: \(loadpercent)")
                         var alert = false
                         var message = ""
@@ -156,7 +185,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                         }
                         if (hours >= 8) {
                             alert = true
-                            message = "Node \(hostname) has been up for \(hours) hours, consider shutting it down."
+                            message = "Node \(hostname) has been up for \(Int(hours)) hours, consider shutting it down."
                         }
                         if (alert) {
                             self.showNotification(message: message)
