@@ -16,7 +16,7 @@ struct ContentView: View {
     var body: some View {
         VStack(alignment: .leading) {
 
-            Text("CloudMinder ©2020 by Dana Basken").padding(.all)
+            Text("CloudMinder v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String) ©2020 by Dana Basken").padding(.all)
 
             VStack(alignment: .leading) {
                 Text("DataProc IP").font(.callout).bold()

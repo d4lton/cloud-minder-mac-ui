@@ -41,7 +41,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         
         if (userDefaults != nil) {
             let configIpAddress = userDefaults!.string(forKey: "ipAddress")
-            print("configIpAddress: \(configIpAddress)")
             if (configIpAddress == nil) {
                 userDefaults!.set(ipAddress, forKey: "ipAddress")
                 userDefaults!.set(port, forKey: "port")
@@ -50,7 +49,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
             ipAddress = userDefaults!.string(forKey: "ipAddress") ?? ipAddress
             port = userDefaults!.integer(forKey: "port") != 0 ? userDefaults!.integer(forKey: "port") : port
         }
-        print("settings ipAddress: \(ipAddress) : \(port)")
 
         setUpMenuButton()
         setUpNotifications()
@@ -75,8 +73,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
         }
-        let show = UNNotificationAction(identifier: "show", title: "Later", options: .foreground)
-        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [])
+        let poweroff = UNNotificationAction(identifier: "poweroff", title: "Poweroff", options: .foreground)
+        let category = UNNotificationCategory(identifier: "alarm", actions: [poweroff], intentIdentifiers: [])
         center.setNotificationCategories([category])
         center.delegate = self
     }
@@ -152,6 +150,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let content = UNMutableNotificationContent()
         content.title = "CloudMinder"
         content.body = message
+        // content.userInfo = [:]
         content.categoryIdentifier = "alarm"
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
@@ -170,7 +169,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                 } else {
                     self.showNormalIcon()
                     let status = String(data: data!, encoding: .utf8)?.convertToDictionary()
-                    print("\(status)")
                     if (status != nil) {
                         let hostname = status!["hostname"] as! String
                         let hours = status!["uptime"] as! Double / 3600.0
@@ -202,20 +200,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     func applicationWillTerminate(_ aNotification: Notification) {
         timer?.invalidate()
     }
+    
+    func powerOff() {
+        let url = URL(string: "http://\(self.contentView.address):\(self.contentView.port)/poweroff")
+        var request = URLRequest(url: url!)
+        request.httpMethod = "POST"
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        }
+        task.resume()
+    }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        if let customData = userInfo["customData"] as? String {
-            print("Custom data received: \(customData)")
-            switch response.actionIdentifier {
-            case UNNotificationDefaultActionIdentifier:
-                print("user clicked 'Close'")
-            case "show":
-                print("user clicked 'Later'")
-                break
-            default:
-                break
-            }
+        // let userInfo = response.notification.request.content.userInfo
+        switch response.actionIdentifier {
+        case UNNotificationDefaultActionIdentifier:
+            print("user clicked 'Close'")
+        case "poweroff":
+            print("user clicked 'Poweroff'")
+            powerOff()
+            break
+        default:
+            break
         }
         completionHandler()
     }
