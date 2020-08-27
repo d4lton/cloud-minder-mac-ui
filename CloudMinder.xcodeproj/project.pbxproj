@@ -98,6 +98,7 @@
 				371B140124F593AE00E12677 /* Sources */,
 				371B140224F593AE00E12677 /* Frameworks */,
 				371B140324F593AE00E12677 /* Resources */,
+				3782913A24F7E74F0064846E /* Increment Version */,
 			);
 			buildRules = (
 			);
@@ -153,6 +154,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3782913A24F7E74F0064846E /* Increment Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Version";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nxcrun agvtool next-version -all\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		371B140124F593AE00E12677 /* Sources */ = {
@@ -298,6 +320,7 @@
 				CODE_SIGN_ENTITLEMENTS = CloudMinder/CloudMinder.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_ASSET_PATHS = "\"CloudMinder/Preview Content\"";
 				DEVELOPMENT_TEAM = Q2CZ9W574K;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -311,6 +334,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.basken.CloudMinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -319,8 +343,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CloudMinder/CloudMinder.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_ASSET_PATHS = "\"CloudMinder/Preview Content\"";
 				DEVELOPMENT_TEAM = Q2CZ9W574K;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -334,6 +360,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.basken.CloudMinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
