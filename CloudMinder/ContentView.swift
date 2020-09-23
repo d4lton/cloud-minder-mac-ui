@@ -10,8 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var address: String = ""
-    @State var port: Int = 0
+    @State var nodeName: String = ""
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -19,19 +18,13 @@ struct ContentView: View {
             Text("CloudMinder v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String) ©2020 by Dana Basken").padding(.all)
 
             VStack(alignment: .leading) {
-                Text("DataProc IP").font(.callout).bold()
-                TextField("", text: self.$address)
-            }.padding(.all)
-            
-            VStack(alignment: .leading) {
-                Text("API Port").font(.callout).bold()
-                TextField("", text: .constant(String(self.port)))
+                Text("GCP Node Name").font(.callout).bold()
+                TextField("", text: self.$nodeName)
             }.padding(.all)
 
             Button(action: {
                 let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
-                userDefaults!.set(self.address, forKey: "ipAddress")
-                userDefaults!.set(self.port, forKey: "port")
+                userDefaults!.set(self.nodeName, forKey: "nodeName")
             }, label: {
                 Text("Save")
             }).padding(.all).frame(maxWidth: .infinity, maxHeight: .infinity)

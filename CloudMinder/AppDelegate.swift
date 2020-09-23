@@ -23,6 +23,16 @@ import SwiftUI
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
+    
+    struct NetworkInterface: Codable {
+        let networkIP: String?
+    }
+
+    struct Node: Codable {
+        let name: String?
+        let status: String?
+        let networkInterfaces: [NetworkInterface]?
+    }
 
     var window: NSWindow!
     var popover: NSPopover!
@@ -32,31 +42,55 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     var lastNotification: Date!
     var contentView: ContentView!
 
-    var ipAddress = "localhost"
+    var nodeName = ""
     var port = 2112
+    var nodes: [Node] = []
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-                
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
-        
-        if (userDefaults != nil) {
-            let configIpAddress = userDefaults!.string(forKey: "ipAddress")
-            if (configIpAddress == nil) {
-                userDefaults!.set(ipAddress, forKey: "ipAddress")
-                userDefaults!.set(port, forKey: "port")
-                userDefaults!.synchronize()
-            }
-            ipAddress = userDefaults!.string(forKey: "ipAddress") ?? ipAddress
-            port = userDefaults!.integer(forKey: "port") != 0 ? userDefaults!.integer(forKey: "port") : port
-        }
-
+        refreshConfiguration()
         setUpMenuButton()
         setUpNotifications()
         startTimer()
     }
     
+    func refreshConfiguration() {
+        let originalNodeName = nodeName
+        loadSettings()
+        if (originalNodeName != nodeName) {
+            print("nodeName changed: \(originalNodeName) -> \(nodeName)")
+            setUpNodes()
+        }
+    }
+
+    func loadSettings() {
+        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
+        if (userDefaults != nil) {
+            let configIpAddress = userDefaults!.string(forKey: "ipAddress")
+            if (configIpAddress == nil) {
+                userDefaults!.set(nodeName, forKey: "nodeName")
+                userDefaults!.synchronize()
+            }
+            nodeName = userDefaults!.string(forKey: "nodeName") ?? nodeName
+        }
+    }
+
+    func getNodes(name: String) -> [Node] {
+        let response = exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "list", "--project=noumena-dev", "--format=json(name,status,networkInterfaces[].networkIP)")
+        do {
+            return try JSONDecoder().decode([Node].self, from: Data(response.utf8)).filter { ($0.name?.starts(with: "\(name)-gdp"))! }
+        } catch let error {
+            print(error)
+        }
+        return []
+    }
+
+    func setUpNodes() {
+        nodes = getNodes(name: nodeName)
+        print(nodes)
+    }
+    
     func setUpMenuButton() {
-        contentView = ContentView(address: ipAddress, port: port)
+        contentView = ContentView(nodeName: nodeName)
         let popover = NSPopover()
         popover.contentSize = NSSize(width: 300, height: 50)
         popover.behavior = .transient
@@ -68,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
              button.action = #selector(togglePopover(_:))
         }
     }
-    
+
     func setUpNotifications() {
         center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
@@ -88,7 +122,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                     self.popover.contentViewController?.view.window?.becomeKey()
               }
          }
-        
     }
     
     func showNormalIcon() {
@@ -161,8 +194,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { timer in
-            print("contentView.address: \(self.contentView.address)")
-            let url = URL(string: "http://\(self.contentView.address):\(self.contentView.port)/status")
+            self.refreshConfiguration()
+            let address = self.nodes.first?.networkInterfaces?.first?.networkIP ?? "localhost"
+            print("contentView.address: \(address)")
+            let url = URL(string: "http://\(address):\(self.port)/status")
             let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
                 if error != nil {
                     self.showOffIcon()
@@ -202,7 +237,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     func powerOff() {
-        let url = URL(string: "http://\(self.contentView.address):\(self.contentView.port)/poweroff")
+        let address = self.nodes.first?.networkInterfaces?.first?.networkIP ?? "localhost"
+        let url = URL(string: "http://\(address):\(port)/poweroff")
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -223,6 +259,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
             break
         }
         completionHandler()
+    }
+
+    func exec(execPath: String, arguments: String...) -> String {
+        let process = Process()
+        process.launchPath = execPath
+        process.arguments = arguments
+        let stdout = Pipe()
+        process.standardOutput = stdout
+        process.launch()
+        process.waitUntilExit()
+        return String(data: stdout.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
     }
 
 }
