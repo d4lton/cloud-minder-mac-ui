@@ -24,11 +24,11 @@ import SwiftUI
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     
-    struct NetworkInterface: Codable {
+    struct NetworkInterface: Codable, Hashable {
         let networkIP: String?
     }
 
-    struct Node: Codable {
+    struct Node: Codable, Hashable {
         let name: String?
         let status: String?
         let networkInterfaces: [NetworkInterface]?
@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     func setUpMenuButton() {
-        contentView = ContentView(nodeName: nodeName)
+        contentView = ContentView(nodeName: nodeName, nodes: nodes)
         let popover = NSPopover()
         popover.contentSize = NSSize(width: 300, height: 50)
         popover.behavior = .transient

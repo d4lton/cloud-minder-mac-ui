@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
 
     @State var nodeName: String = ""
+    @State var nodes: [AppDelegate.Node] = []
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -28,6 +29,14 @@ struct ContentView: View {
             }, label: {
                 Text("Save")
             }).padding(.all).frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            Divider()
+
+            VStack(alignment: .leading) {
+                ForEach(nodes, id:\.self) { node in
+                    Text("\(node.name!): \(node.status!)")
+                }
+            }.padding(.all)
 
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
