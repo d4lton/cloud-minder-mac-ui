@@ -33,6 +33,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let status: String?
         let networkInterfaces: [NetworkInterface]?
     }
+    
+    struct NodeStatus: Codable {
+        let node: Node?
+        let state: String?
+        let uptimeHours: Double?
+        let loadPercent: Double?
+    }
 
     var window: NSWindow!
     var popover: NSPopover!
@@ -77,7 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     func getNodes(name: String) -> [Node] {
         let response = exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "list", "--project=noumena-dev", "--format=json(name,status,networkInterfaces[].networkIP)")
         do {
-            return try JSONDecoder().decode([Node].self, from: Data(response.utf8)).filter { ($0.name?.starts(with: "\(name)-gdp"))! }
+            return try JSONDecoder().decode([Node].self, from: Data(response.utf8)).filter { ($0.name?.starts(with: name))! }
         } catch let error {
             print(error)
         }
@@ -172,7 +179,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         }
     }
     
-    func showNotification(message: String) {
+    func showNotification(message: String, node: Node) {
         let now = Date()
         if (lastNotification != nil) {
             let difference = now.timeIntervalSince(lastNotification)
@@ -183,7 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let content = UNMutableNotificationContent()
         content.title = "CloudMinder"
         content.body = message
-        // content.userInfo = [:]
+        content.userInfo = ["address": node.networkInterfaces?.first?.networkIP as Any]
         content.categoryIdentifier = "alarm"
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
@@ -191,44 +198,90 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         self.center.add(request)
         lastNotification = now
     }
+    
+    func getNodeStatus(node: Node, completion: @escaping (NodeStatus) -> ()) {
+        let address = node.networkInterfaces?.first?.networkIP
+        let url = URL(string: "http://\(address ?? ""):\(self.port)/status")
+        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+            if (error == nil) {
+                let status = String(data: data!, encoding: .utf8)?.convertToDictionary()
+                if (status != nil) {
+                    let uptimeHours = status!["uptime"] as! Double / 3600.0
+                    let loadPercent = status!["loadpercent"] as! Double
+                    var state = "RUNNING"
+                    if (uptimeHours >= 1.0 && loadPercent < 1.0) {
+                        state = "UNDERUTILIZED"
+                    }
+                    if (uptimeHours >= 8) {
+                        state = "LONG_RUNNING"
+                    }
+                    completion(NodeStatus(node: node, state: state, uptimeHours: uptimeHours, loadPercent: loadPercent))
+                } else {
+                    completion(NodeStatus(node: node, state: "ERROR", uptimeHours: 0.0, loadPercent: 0.0))
+                }
+            } else {
+                completion(NodeStatus(node: node, state: "ERROR", uptimeHours: 0.0, loadPercent: 0.0))
+            }
+        }
+        task.resume()
+    }
+    
+    func getNodeStatuses(completion: @escaping ([NodeStatus]) -> ()) {
+        var results: [NodeStatus] = []
+        let group = DispatchGroup()
+        for node in nodes {
+            group.enter()
+            getNodeStatus(node: node) { status in
+                results.append(status)
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            completion(results)
+        }
+    }
 
     func startTimer() {
+        // update the IP addresses every 10 minutes
+        Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { timer in self.setUpNodes() }
+        // check to see if the nodes are up and underutilized every 30 seconds
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { timer in
             self.refreshConfiguration()
-            let address = self.nodes.first?.networkInterfaces?.first?.networkIP ?? "localhost"
-            print("contentView.address: \(address)")
-            let url = URL(string: "http://\(address):\(self.port)/status")
-            let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
-                if error != nil {
-                    self.showOffIcon()
-                } else {
-                    self.showNormalIcon()
-                    let status = String(data: data!, encoding: .utf8)?.convertToDictionary()
-                    if (status != nil) {
-                        let hostname = status!["hostname"] as! String
-                        let hours = status!["uptime"] as! Double / 3600.0
-                        let loadpercent = status!["loadpercent"] as! Double
-                        // self.showActivityIcon(percent: loadpercent)
-                        print("up hours: \(hours), loadpercent: \(loadpercent)")
-                        var alert = false
-                        var message = ""
-                        if (hours >= 1.0 && loadpercent < 1.0) {
-                            alert = true
-                            message = "Node \(hostname) is not being utilized, consider shutting it down."
+            self.getNodeStatuses { statuses in
+                var overallState = "IDLE"
+                print("\(statuses)")
+                for status in statuses {
+                    if (status.state == "UNDERUTILIZED") {
+                        self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized, consider shutting it down.", node: status.node!)
+                    }
+                    if (status.state == "LONG_RUNNING") {
+                        self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours, consider shutting it down.", node: status.node!)
+                    }
+                    if (status.node?.status == "RUNNING") {
+                        if (status.state == "ERROR") {
+                            overallState = "ERROR"
+                        } else {
+                            if (overallState != "ERROR") {
+                                overallState = "RUNNING"
+                            }
                         }
-                        if (hours >= 8) {
-                            alert = true
-                            message = "Node \(hostname) has been up for \(Int(hours)) hours, consider shutting it down."
-                        }
-                        if (alert) {
-                            self.showNotification(message: message)
-                        }
-                    } else {
-                        self.showErrorIcon()
                     }
                 }
+                switch (overallState) {
+                case "IDLE":
+                    self.showOffIcon()
+                    break
+                case "ERROR":
+                    self.showErrorIcon()
+                    break
+                case "RUNNING":
+                    self.showNormalIcon()
+                    break
+                default:
+                    break
+                }
+                print("overall state: \(overallState)")
             }
-            task.resume()
         }
     }
 
@@ -236,8 +289,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         timer?.invalidate()
     }
     
-    func powerOff() {
-        let address = self.nodes.first?.networkInterfaces?.first?.networkIP ?? "localhost"
+    func powerOff(address: String) {
         let url = URL(string: "http://\(address):\(port)/poweroff")
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
@@ -247,13 +299,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // let userInfo = response.notification.request.content.userInfo
+        let userInfo = response.notification.request.content.userInfo
         switch response.actionIdentifier {
         case UNNotificationDefaultActionIdentifier:
             print("user clicked 'Close'")
+            break
         case "poweroff":
             print("user clicked 'Poweroff'")
-            powerOff()
+            powerOff(address: userInfo["address"] as! String)
             break
         default:
             break
