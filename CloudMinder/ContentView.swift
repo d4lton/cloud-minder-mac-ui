@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
 
+    @Environment(\.presentationMode) var presentationMode
+
     @State var nodeName: String = ""
     @State var nodes: [AppDelegate.Node] = []
 
@@ -37,6 +39,15 @@ struct ContentView: View {
                     Text("\(node.name!): \(node.status!)")
                 }
             }.padding(.all)
+
+            /*
+            Button(action: {
+                print("NO SHUT THEM ALL DOWN")
+                self.presentationMode.wrappedValue.dismiss()
+            }, label: {
+                Text("Power All Off")
+            }).padding(.all).frame(maxWidth: .infinity, maxHeight: .infinity)
+            */
 
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }

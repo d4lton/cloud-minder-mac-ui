@@ -93,6 +93,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func setUpNodes() {
         nodes = getNodes(name: nodeName)
+        if (contentView != nil) {
+            contentView.nodes = nodes
+        }
         print(nodes)
     }
     
