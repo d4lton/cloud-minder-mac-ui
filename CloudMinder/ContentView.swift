@@ -10,15 +10,15 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @Environment(\.presentationMode) var presentationMode
-
     @State var nodeName: String = ""
     @State var nodes: [AppDelegate.Node] = []
+    @State var currentVersion: String = "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String)"
+    @State var availableVersion: String = ""
 
     var body: some View {
         VStack(alignment: .leading) {
 
-            Text("CloudMinder v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String) ©2020 by Dana Basken").padding(.all)
+            Text("CloudMinder v\(currentVersion) ©2020 by Dana Basken").padding(.all)
 
             VStack(alignment: .leading) {
                 Text("GCP Node Name").font(.callout).bold()
@@ -39,15 +39,10 @@ struct ContentView: View {
                     Text("\(node.name!): \(node.status!)")
                 }
             }.padding(.all)
-
-            /*
-            Button(action: {
-                print("NO SHUT THEM ALL DOWN")
-                self.presentationMode.wrappedValue.dismiss()
-            }, label: {
-                Text("Power All Off")
-            }).padding(.all).frame(maxWidth: .infinity, maxHeight: .infinity)
-            */
+            
+            if (currentVersion != availableVersion && availableVersion != "") {
+                Text("new version available: v\(availableVersion)").padding(.all)
+            }
 
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }

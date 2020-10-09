@@ -47,7 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     var timer: Timer!
     var center: UNUserNotificationCenter!
     var lastNotification: Date!
-    var contentView: ContentView!
+    var availableVersion: String = ""
 
     var nodeName = ""
     var port = 2112
@@ -80,6 +80,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
             nodeName = userDefaults!.string(forKey: "nodeName") ?? nodeName
         }
     }
+    
+    func getAvailableVersion() {
+        let url = URL(string: "https://api.github.com/repos/d4lton/cloud-minder-mac-ui/releases/latest")
+        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+            let status = String(data: data!, encoding: .utf8)?.convertToDictionary()
+            self.availableVersion = status!["name"] as! String
+        }
+        task.resume()
+    }
 
     func getNodes(name: String) -> [Node] {
         let response = exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "list", "--project=noumena-dev", "--format=json(name,status,networkInterfaces[].networkIP)")
@@ -93,24 +102,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func setUpNodes() {
         nodes = getNodes(name: nodeName)
-        if (contentView != nil) {
-            contentView.nodes = nodes
+        getAvailableVersion()
+        if (popover != nil) {
+            popover.contentViewController = NSHostingController(rootView: getContentView())
         }
         print(nodes)
     }
     
     func setUpMenuButton() {
-        contentView = ContentView(nodeName: nodeName, nodes: nodes)
-        let popover = NSPopover()
+        popover = NSPopover()
         popover.contentSize = NSSize(width: 300, height: 50)
         popover.behavior = .transient
-        popover.contentViewController = NSHostingController(rootView: contentView)
-        self.popover = popover
+        popover.contentViewController = NSHostingController(rootView: getContentView())
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
         if let button = self.statusBarItem.button {
              button.image = NSImage(named: "IconOff")
              button.action = #selector(togglePopover(_:))
         }
+    }
+    
+    func getContentView() -> ContentView {
+        let contentView = ContentView(nodeName: nodeName, nodes: nodes, availableVersion: availableVersion)
+        return contentView
     }
 
     func setUpNotifications() {
