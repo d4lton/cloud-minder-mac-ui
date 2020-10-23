@@ -122,7 +122,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     func getContentView() -> ContentView {
-        let contentView = ContentView(nodeName: nodeName, nodes: nodes, availableVersion: availableVersion)
+        let contentView = ContentView(nodeName: nodeName, nodes: nodes, availableVersion: availableVersion, owner: self)
         return contentView
     }
 
