@@ -42,15 +42,23 @@ struct ContentView: View {
             
             HStack {
                 Button(action: {
+                    let queue = DispatchQueue(label: "com.basken.CloudMinder.startQueue")
                     for node in self.nodes {
-                        owner.exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "start", "--project=noumena-dev", "--zone=us-central1-a", node.name!)
+                        queue.async {
+                            owner.exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "start", "--project=noumena-dev", "--zone=us-central1-a", node.name!)
+                            owner.showNotification(message: "Node \(node.name ?? "<unknown>") has been started.", node: node, immediate: true)
+                        }
                     }
                 }, label: {
                     Text("Start All")
                 }).frame(maxWidth: .infinity, maxHeight: .infinity)
                 Button(action: {
+                    let queue = DispatchQueue(label: "com.basken.CloudMinder.stopQueue")
                     for node in self.nodes {
-                        owner.exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "stop", "--project=noumena-dev", "--zone=us-central1-a", node.name!)
+                        queue.async {
+                            owner.exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "stop", "--project=noumena-dev", "--zone=us-central1-a", node.name!)
+                            owner.showNotification(message: "Node \(node.name ?? "<unknown>") has been stopped.", node: node, immediate: true)
+                        }
                     }
                 }, label: {
                     Text("Stop All")

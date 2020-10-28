@@ -195,9 +195,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         }
     }
     
-    func showNotification(message: String, node: Node) {
+    func showNotification(message: String, node: Node, immediate: Bool = false) {
         let now = Date()
-        if (lastNotification != nil) {
+        if (lastNotification != nil && !immediate) {
             let difference = now.timeIntervalSince(lastNotification)
             if (difference < 3600.0) {
                 return
@@ -207,8 +207,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         content.title = "CloudMinder"
         content.body = message
         content.userInfo = ["address": node.networkInterfaces?.first?.networkIP as Any]
-        content.categoryIdentifier = "alarm"
-        content.sound = UNNotificationSound.default
+        if (!immediate) {
+            content.categoryIdentifier = "alarm"
+            content.sound = UNNotificationSound.default
+        }
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         self.center.add(request)
