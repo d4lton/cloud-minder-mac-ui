@@ -1,0 +1,592 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		008613607F6545D07B9F643B497D57BB /* SegmentedControlStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF33FEDC6FD3365F24C39D9595CFAF6F /* SegmentedControlStyleViewController.swift */; };
+		0123D922A17F9177CEAB8BC36247D810 /* ToolbarItemStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9B0F6ADF310DC2050D5A46DFAE6554 /* ToolbarItemStyleViewController.swift */; };
+		15CD64AF57C4C6FA0492016FD4F4E642 /* Pods-CloudMinder-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8863CEE8B04B881A1DFC9A15ED4E48AF /* Pods-CloudMinder-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		1B715BE319F6957A2FE9CEEC3FC008CF /* PreferencePane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E93F9527BD53FAAA55F3BE1B9CB402 /* PreferencePane.swift */; };
+		2CFEFC225B520C7B7F182BB727B27BC9 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06066A6A8C46B5A3F390D1DE53BA0C39 /* Localization.swift */; };
+		3089B77F65D15755C4BD8F9E34278455 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3668C62AF8D1324E948FA2F7E961A3 /* Section.swift */; };
+		33F2B6133187C1E0314D14F71BC8AD84 /* Pane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8949082A54BC4326056BF0153FDACFCC /* Pane.swift */; };
+		3B089B8482EDA844794195FB48C72FC3 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7199D55A32A9E21ED20A4F50694439 /* Preferences.swift */; };
+		464BBCD3D977E8D005F5D2693B182BFC /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8303D05CCB23E027E51F376844F825CA /* Container.swift */; };
+		6ECE20E7A5F8D8870E76AE676FF63994 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA13ABE76543D8AD95917FC3294846A2 /* PreferencesWindowController.swift */; };
+		6EE8F0CB6FC9A5DCF8B40A2E6316610D /* Preferences-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B79A59A45A2E2990F8FEC0BCB0643BF6 /* Preferences-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		893F1D9B6920A14420582E55D362FE9F /* Preferences-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C551985EE9937CB5C4A307E3E27EA4A /* Preferences-dummy.m */; };
+		91C2B0641F05D2C0E4939CA4F56925F3 /* Pods-CloudMinder-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A2E36D08D816407C4320A534727453 /* Pods-CloudMinder-dummy.m */; };
+		A8E909D518C0F4B55E32D92DCE6F877C /* PreferencesStyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A84BAA0C7A4B7A0D4ED9646E37850F7 /* PreferencesStyleController.swift */; };
+		BB955D2F6B83D83FAB93B3EA95233075 /* PreferencesStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00743AB1C6D6283ED38E729AA0DD935 /* PreferencesStyle.swift */; };
+		DD4C5A81823049D1750A1F07504A6618 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE04CBAFBE640B7E6D2209811F72E23 /* Utilities.swift */; };
+		DDD12E23279ECEB554A6A989B8E84822 /* PreferencesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A989FAA2153761EB43D6CE0CB7E02AD /* PreferencesTabViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8D73DC41C7BC9B47160876F9E07F48F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 080990A33C8E049DC557762B0B4240DB;
+			remoteInfo = Preferences;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		06066A6A8C46B5A3F390D1DE53BA0C39 /* Localization.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Localization.swift; path = Sources/Preferences/Localization.swift; sourceTree = "<group>"; };
+		0FE04CBAFBE640B7E6D2209811F72E23 /* Utilities.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Sources/Preferences/Utilities.swift; sourceTree = "<group>"; };
+		14A2E36D08D816407C4320A534727453 /* Pods-CloudMinder-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CloudMinder-dummy.m"; sourceTree = "<group>"; };
+		1B068C16372E1F3D58D98260F7AF6178 /* Pods-CloudMinder-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CloudMinder-acknowledgements.plist"; sourceTree = "<group>"; };
+		1E9B0F6ADF310DC2050D5A46DFAE6554 /* ToolbarItemStyleViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolbarItemStyleViewController.swift; path = Sources/Preferences/ToolbarItemStyleViewController.swift; sourceTree = "<group>"; };
+		2A989FAA2153761EB43D6CE0CB7E02AD /* PreferencesTabViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreferencesTabViewController.swift; path = Sources/Preferences/PreferencesTabViewController.swift; sourceTree = "<group>"; };
+		3A84BAA0C7A4B7A0D4ED9646E37850F7 /* PreferencesStyleController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreferencesStyleController.swift; path = Sources/Preferences/PreferencesStyleController.swift; sourceTree = "<group>"; };
+		40E93F9527BD53FAAA55F3BE1B9CB402 /* PreferencePane.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreferencePane.swift; path = Sources/Preferences/PreferencePane.swift; sourceTree = "<group>"; };
+		640B3A369D3F3CE8EE74BCE1CB6B0610 /* libPods-CloudMinder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CloudMinder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		67F3C7A3AA3A3CC8DE61433D8A0D211D /* Preferences-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Preferences-prefix.pch"; sourceTree = "<group>"; };
+		6A115D5F73B04DD7F1B7818EDD9B2EF3 /* libPreferences.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPreferences.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C551985EE9937CB5C4A307E3E27EA4A /* Preferences-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Preferences-dummy.m"; sourceTree = "<group>"; };
+		8303D05CCB23E027E51F376844F825CA /* Container.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Container.swift; path = Sources/Preferences/Container.swift; sourceTree = "<group>"; };
+		85BD97C9900FEE1EEC3063E7E04BD3FF /* Preferences.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Preferences.modulemap; sourceTree = "<group>"; };
+		8863CEE8B04B881A1DFC9A15ED4E48AF /* Pods-CloudMinder-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CloudMinder-umbrella.h"; sourceTree = "<group>"; };
+		8949082A54BC4326056BF0153FDACFCC /* Pane.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Pane.swift; path = Sources/Preferences/Pane.swift; sourceTree = "<group>"; };
+		916F6629281D299D2B4E435186F4434A /* Preferences.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Preferences.xcconfig; sourceTree = "<group>"; };
+		97B1A0F81A0B6F36CDC6E48F72F9232D /* Pods-CloudMinder-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-CloudMinder-acknowledgements.markdown"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B00743AB1C6D6283ED38E729AA0DD935 /* PreferencesStyle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreferencesStyle.swift; path = Sources/Preferences/PreferencesStyle.swift; sourceTree = "<group>"; };
+		B79A59A45A2E2990F8FEC0BCB0643BF6 /* Preferences-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Preferences-umbrella.h"; sourceTree = "<group>"; };
+		C388C6A4A38649BCF4427A5104779F7C /* Pods-CloudMinder.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-CloudMinder.modulemap"; sourceTree = "<group>"; };
+		CF33FEDC6FD3365F24C39D9595CFAF6F /* SegmentedControlStyleViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SegmentedControlStyleViewController.swift; path = Sources/Preferences/SegmentedControlStyleViewController.swift; sourceTree = "<group>"; };
+		EA13ABE76543D8AD95917FC3294846A2 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreferencesWindowController.swift; path = Sources/Preferences/PreferencesWindowController.swift; sourceTree = "<group>"; };
+		EE3668C62AF8D1324E948FA2F7E961A3 /* Section.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Section.swift; path = Sources/Preferences/Section.swift; sourceTree = "<group>"; };
+		FA13A4FAAE3B3EBDD925823A477662AF /* Pods-CloudMinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CloudMinder.release.xcconfig"; sourceTree = "<group>"; };
+		FD101E4C984554E5CCD7D5318E3A1C75 /* Pods-CloudMinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CloudMinder.debug.xcconfig"; sourceTree = "<group>"; };
+		FE7199D55A32A9E21ED20A4F50694439 /* Preferences.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Preferences.swift; path = Sources/Preferences/Preferences.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1ED17FD9E81E1DC7539252D519EB7FFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		59C6E93111AE9B430A1D4D49DC387FDF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1DD3D58E9C73E1BB8282119EAEB17857 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F7832D9CA82BFE705B252AC356EF286E /* Preferences */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7593F44BF70BA3D5E8A12CDF5944E7B7 /* Pods-CloudMinder */ = {
+			isa = PBXGroup;
+			children = (
+				C388C6A4A38649BCF4427A5104779F7C /* Pods-CloudMinder.modulemap */,
+				97B1A0F81A0B6F36CDC6E48F72F9232D /* Pods-CloudMinder-acknowledgements.markdown */,
+				1B068C16372E1F3D58D98260F7AF6178 /* Pods-CloudMinder-acknowledgements.plist */,
+				14A2E36D08D816407C4320A534727453 /* Pods-CloudMinder-dummy.m */,
+				8863CEE8B04B881A1DFC9A15ED4E48AF /* Pods-CloudMinder-umbrella.h */,
+				FD101E4C984554E5CCD7D5318E3A1C75 /* Pods-CloudMinder.debug.xcconfig */,
+				FA13A4FAAE3B3EBDD925823A477662AF /* Pods-CloudMinder.release.xcconfig */,
+			);
+			name = "Pods-CloudMinder";
+			path = "Target Support Files/Pods-CloudMinder";
+			sourceTree = "<group>";
+		};
+		C7BA50C83EC406409BBC555CEF4B25F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				640B3A369D3F3CE8EE74BCE1CB6B0610 /* libPods-CloudMinder.a */,
+				6A115D5F73B04DD7F1B7818EDD9B2EF3 /* libPreferences.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
+				1DD3D58E9C73E1BB8282119EAEB17857 /* Pods */,
+				C7BA50C83EC406409BBC555CEF4B25F9 /* Products */,
+				FB589504F76B78BB6663CE1799904036 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F7832D9CA82BFE705B252AC356EF286E /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				8303D05CCB23E027E51F376844F825CA /* Container.swift */,
+				06066A6A8C46B5A3F390D1DE53BA0C39 /* Localization.swift */,
+				8949082A54BC4326056BF0153FDACFCC /* Pane.swift */,
+				40E93F9527BD53FAAA55F3BE1B9CB402 /* PreferencePane.swift */,
+				FE7199D55A32A9E21ED20A4F50694439 /* Preferences.swift */,
+				B00743AB1C6D6283ED38E729AA0DD935 /* PreferencesStyle.swift */,
+				3A84BAA0C7A4B7A0D4ED9646E37850F7 /* PreferencesStyleController.swift */,
+				2A989FAA2153761EB43D6CE0CB7E02AD /* PreferencesTabViewController.swift */,
+				EA13ABE76543D8AD95917FC3294846A2 /* PreferencesWindowController.swift */,
+				EE3668C62AF8D1324E948FA2F7E961A3 /* Section.swift */,
+				CF33FEDC6FD3365F24C39D9595CFAF6F /* SegmentedControlStyleViewController.swift */,
+				1E9B0F6ADF310DC2050D5A46DFAE6554 /* ToolbarItemStyleViewController.swift */,
+				0FE04CBAFBE640B7E6D2209811F72E23 /* Utilities.swift */,
+				FFF7AB61A9BFDD6A456885C1BEAE9603 /* Support Files */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		FB589504F76B78BB6663CE1799904036 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				7593F44BF70BA3D5E8A12CDF5944E7B7 /* Pods-CloudMinder */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		FFF7AB61A9BFDD6A456885C1BEAE9603 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				85BD97C9900FEE1EEC3063E7E04BD3FF /* Preferences.modulemap */,
+				916F6629281D299D2B4E435186F4434A /* Preferences.xcconfig */,
+				6C551985EE9937CB5C4A307E3E27EA4A /* Preferences-dummy.m */,
+				67F3C7A3AA3A3CC8DE61433D8A0D211D /* Preferences-prefix.pch */,
+				B79A59A45A2E2990F8FEC0BCB0643BF6 /* Preferences-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Preferences";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		3FE74E8B20570C60A7440FA15D3C7872 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EE8F0CB6FC9A5DCF8B40A2E6316610D /* Preferences-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4E6A261C61DFB2B6A23CEAC1DB648AA8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15CD64AF57C4C6FA0492016FD4F4E642 /* Pods-CloudMinder-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		080990A33C8E049DC557762B0B4240DB /* Preferences */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1959B3659F5B310F7C5C0228AAD89BF5 /* Build configuration list for PBXNativeTarget "Preferences" */;
+			buildPhases = (
+				3FE74E8B20570C60A7440FA15D3C7872 /* Headers */,
+				71C9A54FE280ADBCC74FBEDFCB2D40C1 /* Sources */,
+				1ED17FD9E81E1DC7539252D519EB7FFE /* Frameworks */,
+				76AB092DC6A09AC75299490BD107A949 /* Copy generated compatibility header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Preferences;
+			productName = Preferences;
+			productReference = 6A115D5F73B04DD7F1B7818EDD9B2EF3 /* libPreferences.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		343C9AC18ED0152E7D44F8693A33A49F /* Pods-CloudMinder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A70F8F5C68E1A2EE86DAFC411E43428 /* Build configuration list for PBXNativeTarget "Pods-CloudMinder" */;
+			buildPhases = (
+				4E6A261C61DFB2B6A23CEAC1DB648AA8 /* Headers */,
+				64D41C488BF639CE7232D70286376AD5 /* Sources */,
+				59C6E93111AE9B430A1D4D49DC387FDF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				624048020C64F86EFA5EF78454C9AC3B /* PBXTargetDependency */,
+			);
+			name = "Pods-CloudMinder";
+			productName = "Pods-CloudMinder";
+			productReference = 640B3A369D3F3CE8EE74BCE1CB6B0610 /* libPods-CloudMinder.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1220;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = C7BA50C83EC406409BBC555CEF4B25F9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				343C9AC18ED0152E7D44F8693A33A49F /* Pods-CloudMinder */,
+				080990A33C8E049DC557762B0B4240DB /* Preferences */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		76AB092DC6A09AC75299490BD107A949 /* Copy generated compatibility header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DERIVED_SOURCES_DIR}/${PRODUCT_MODULE_NAME}-Swift.h",
+				"${PODS_ROOT}/Headers/Public/Preferences/Preferences.modulemap",
+				"${PODS_ROOT}/Headers/Public/Preferences/Preferences-umbrella.h",
+			);
+			name = "Copy generated compatibility header";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${BUILT_PRODUCTS_DIR}/${PRODUCT_MODULE_NAME}.modulemap",
+				"${BUILT_PRODUCTS_DIR}/Preferences-umbrella.h",
+				"${BUILT_PRODUCTS_DIR}/Swift Compatibility Header/${PRODUCT_MODULE_NAME}-Swift.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "COMPATIBILITY_HEADER_PATH=\"${BUILT_PRODUCTS_DIR}/Swift Compatibility Header/${PRODUCT_MODULE_NAME}-Swift.h\"\nMODULE_MAP_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_MODULE_NAME}.modulemap\"\n\nditto \"${DERIVED_SOURCES_DIR}/${PRODUCT_MODULE_NAME}-Swift.h\" \"${COMPATIBILITY_HEADER_PATH}\"\nditto \"${PODS_ROOT}/Headers/Public/Preferences/Preferences.modulemap\" \"${MODULE_MAP_PATH}\"\nditto \"${PODS_ROOT}/Headers/Public/Preferences/Preferences-umbrella.h\" \"${BUILT_PRODUCTS_DIR}\"\nprintf \"\\n\\nmodule ${PRODUCT_MODULE_NAME}.Swift {\\n  header \\\"${COMPATIBILITY_HEADER_PATH}\\\"\\n  requires objc\\n}\\n\" >> \"${MODULE_MAP_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		64D41C488BF639CE7232D70286376AD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91C2B0641F05D2C0E4939CA4F56925F3 /* Pods-CloudMinder-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71C9A54FE280ADBCC74FBEDFCB2D40C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				464BBCD3D977E8D005F5D2693B182BFC /* Container.swift in Sources */,
+				2CFEFC225B520C7B7F182BB727B27BC9 /* Localization.swift in Sources */,
+				33F2B6133187C1E0314D14F71BC8AD84 /* Pane.swift in Sources */,
+				1B715BE319F6957A2FE9CEEC3FC008CF /* PreferencePane.swift in Sources */,
+				893F1D9B6920A14420582E55D362FE9F /* Preferences-dummy.m in Sources */,
+				3B089B8482EDA844794195FB48C72FC3 /* Preferences.swift in Sources */,
+				BB955D2F6B83D83FAB93B3EA95233075 /* PreferencesStyle.swift in Sources */,
+				A8E909D518C0F4B55E32D92DCE6F877C /* PreferencesStyleController.swift in Sources */,
+				DDD12E23279ECEB554A6A989B8E84822 /* PreferencesTabViewController.swift in Sources */,
+				6ECE20E7A5F8D8870E76AE676FF63994 /* PreferencesWindowController.swift in Sources */,
+				3089B77F65D15755C4BD8F9E34278455 /* Section.swift in Sources */,
+				008613607F6545D07B9F643B497D57BB /* SegmentedControlStyleViewController.swift in Sources */,
+				0123D922A17F9177CEAB8BC36247D810 /* ToolbarItemStyleViewController.swift in Sources */,
+				DD4C5A81823049D1750A1F07504A6618 /* Utilities.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		624048020C64F86EFA5EF78454C9AC3B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Preferences;
+			target = 080990A33C8E049DC557762B0B4240DB /* Preferences */;
+			targetProxy = 8D73DC41C7BC9B47160876F9E07F48F1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0253CCDEE11BB2E876CF8C6EBDC6E1A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		4106BC2D6E90A52F7998647E94C164AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 916F6629281D299D2B4E435186F4434A /* Preferences.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/Preferences/Preferences-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MODULEMAP_FILE = Headers/Public/Preferences/Preferences.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Preferences;
+				PRODUCT_NAME = Preferences;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+			};
+			name = Release;
+		};
+		444CFCF9CB142671E18A00ABE2FC5F10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD101E4C984554E5CCD7D5318E3A1C75 /* Pods-CloudMinder.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/Pods-CloudMinder/Pods-CloudMinder.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4D9E1BBEC730673056676D1F751FA88E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA13A4FAAE3B3EBDD925823A477662AF /* Pods-CloudMinder.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/Pods-CloudMinder/Pods-CloudMinder.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		6DC6BBF7D2A721A4E91A75A28EEB8E83 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		7D6DF468D6BD47C694711C9169B20773 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 916F6629281D299D2B4E435186F4434A /* Preferences.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREFIX_HEADER = "Target Support Files/Preferences/Preferences-prefix.pch";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MODULEMAP_FILE = Headers/Public/Preferences/Preferences.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Preferences;
+				PRODUCT_NAME = Preferences;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.3;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1959B3659F5B310F7C5C0228AAD89BF5 /* Build configuration list for PBXNativeTarget "Preferences" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D6DF468D6BD47C694711C9169B20773 /* Debug */,
+				4106BC2D6E90A52F7998647E94C164AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DC6BBF7D2A721A4E91A75A28EEB8E83 /* Debug */,
+				0253CCDEE11BB2E876CF8C6EBDC6E1A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A70F8F5C68E1A2EE86DAFC411E43428 /* Build configuration list for PBXNativeTarget "Pods-CloudMinder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				444CFCF9CB142671E18A00ABE2FC5F10 /* Debug */,
+				4D9E1BBEC730673056676D1F751FA88E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

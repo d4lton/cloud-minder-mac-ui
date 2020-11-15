@@ -1,0 +1,16 @@
+PODS:
+  - Preferences (2.1.0)
+
+DEPENDENCIES:
+  - Preferences
+
+SPEC REPOS:
+  trunk:
+    - Preferences
+
+SPEC CHECKSUMS:
+  Preferences: 30977dcf556bdd7c625b5ea4f3fd67fd00d14c3c
+
+PODFILE CHECKSUM: 443f450c66a47b30148c8cfd53bc2aad97a7c017
+
+COCOAPODS: 1.8.4

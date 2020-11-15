@@ -8,6 +8,9 @@
 
 import Foundation
 import UserNotifications
+import Cocoa
+import SwiftUI
+import Preferences
 
 extension String {
     func convertToDictionary() -> [String: Any]? {
@@ -18,9 +21,12 @@ extension String {
     }
 }
 
-import Cocoa
-import SwiftUI
+extension Preferences.PaneIdentifier {
+    static let general = Self("general")
+    static let advanced = Self("advanced")
+}
 
+@available(OSX 11.0, *)
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     
@@ -42,18 +48,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     var window: NSWindow!
-    var popover: NSPopover!
     var statusBarItem: NSStatusItem!
     var timer: Timer!
     var center: UNUserNotificationCenter!
     var lastNotification: Date!
     var availableVersion: String = ""
-
+    var menu: NSMenu!
+    
     var nodeName = ""
     var port = 2112
+    var project = "noumena-dev"
+    var zone = "us-central1-a"
     var nodes: [Node] = []
+    var gcloudPath = "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud"
+
+    lazy var preferencesWindowController = PreferencesWindowController(
+        preferencePanes: [
+            GeneralPreferenceViewController(),
+            AdvancedPreferenceViewController()
+        ]
+    )
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        NSApp.activate(ignoringOtherApps: true)
         refreshConfiguration()
         setUpMenuButton()
         setUpNotifications()
@@ -71,13 +88,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func loadSettings() {
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
-        if (userDefaults != nil) {
-            let configIpAddress = userDefaults!.string(forKey: "ipAddress")
-            if (configIpAddress == nil) {
-                userDefaults!.set(nodeName, forKey: "nodeName")
-                userDefaults!.synchronize()
-            }
-            nodeName = userDefaults!.string(forKey: "nodeName") ?? nodeName
+
+        if (userDefaults?.value(forKey: "nodeName") != nil) {
+            nodeName = userDefaults!.string(forKey: "nodeName")!
+        } else {
+            userDefaults!.set(nodeName, forKey: "nodeName")
+        }
+
+        if (userDefaults?.value(forKey: "project") != nil) {
+            project = userDefaults!.string(forKey: "project")!
+        } else {
+            userDefaults!.set(project, forKey: "project")
+        }
+
+        if (userDefaults?.value(forKey: "zone") != nil) {
+            zone = userDefaults!.string(forKey: "zone")!
+        } else {
+            userDefaults!.set(zone, forKey: "zone")
+        }
+
+        if (userDefaults?.value(forKey: "gcloudPath") != nil) {
+            gcloudPath = userDefaults!.string(forKey: "gcloudPath")!
+        } else {
+            userDefaults!.set(gcloudPath, forKey: "gcloudPath")
+        }
+
+        if (userDefaults?.value(forKey: "port") != nil) {
+            port = userDefaults!.integer(forKey: "port")
+        } else {
+            userDefaults!.set(port, forKey: "port")
         }
     }
     
@@ -91,7 +130,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func getNodes(name: String) -> [Node] {
-        let response = exec(execPath: "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud", arguments: "compute", "instances", "list", "--project=noumena-dev", "--format=json(name,status,networkInterfaces[].networkIP)")
+        let response = exec(execPath: gcloudPath, arguments: "compute", "instances", "list", "--project=\(project)", "--format=json(name,status,networkInterfaces[].networkIP)")
         do {
             return try JSONDecoder().decode([Node].self, from: Data(response.utf8)).filter { ($0.name?.starts(with: name))! }
         } catch let error {
@@ -103,27 +142,65 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     func setUpNodes() {
         nodes = getNodes(name: nodeName)
         getAvailableVersion()
-        if (popover != nil) {
-            popover.contentViewController = NSHostingController(rootView: getContentView())
-        }
+        // TODO: update menu
         print(nodes)
     }
     
     func setUpMenuButton() {
-        popover = NSPopover()
-        popover.contentSize = NSSize(width: 300, height: 50)
-        popover.behavior = .transient
-        popover.contentViewController = NSHostingController(rootView: getContentView())
-        self.statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
-        if let button = self.statusBarItem.button {
-             button.image = NSImage(named: "IconOff")
-             button.action = #selector(togglePopover(_:))
+        createMenu()
+        statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
+        if let button = statusBarItem.button {
+            button.image = NSImage(named: "IconOff")
+            statusBarItem.menu = menu
         }
     }
+
+    func createMenu() {
+        menu = NSMenu()
+        menu.addItem(NSMenuItem(title: "About CloudMinder", action: #selector(AppDelegate.about(_:)), keyEquivalent: ""))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Start All", action: #selector(AppDelegate.startAll(_:)), keyEquivalent: "+"))
+        menu.addItem(NSMenuItem(title: "Stop All", action: #selector(AppDelegate.stopAll(_:)), keyEquivalent: "-"))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Settings...", action: #selector(AppDelegate.settings(_:)), keyEquivalent: ","))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Quit Quotes", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+    }
     
-    func getContentView() -> ContentView {
-        let contentView = ContentView(nodeName: nodeName, nodes: nodes, availableVersion: availableVersion, owner: self)
-        return contentView
+    @objc func about(_ sender: Any?) {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.orderFrontStandardAboutPanel(nil)
+    }
+    
+    @objc func startAll(_ sender: Any?) {
+        print("startAll")
+        self.startStopAll(action: "start")
+    }
+
+    @objc func stopAll(_ sender: Any?) {
+        print("stopAll")
+        self.startStopAll(action: "stop")
+    }
+
+    func startStopAll(action: String) {
+        print("startStopAll")
+        let queue = DispatchQueue(label: "com.basken.CloudMinder.startStopQueue")
+        for node in nodes {
+            queue.async { [self] in
+                let result = exec(execPath: gcloudPath, arguments: "compute", "instances", action, "--project=\(project)", "--zone=\(zone)", node.name!)
+                print(result)
+                if (action == "start") {
+                    showNotification(message: "Node \(node.name ?? "<unknown>") has been started.", node: node, immediate: true)
+                } else {
+                    showNotification(message: "Node \(node.name ?? "<unknown>") has been stopped.", node: node, immediate: true)
+                }
+            }
+        }
+    }
+
+    @objc func settings(_ sender: Any?) {
+        print("settings")
+        self.preferencesWindowController.show()
     }
 
     func setUpNotifications() {
@@ -134,17 +211,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let category = UNNotificationCategory(identifier: "alarm", actions: [poweroff], intentIdentifiers: [])
         center.setNotificationCategories([category])
         center.delegate = self
-    }
-
-    @objc func togglePopover(_ sender: AnyObject?) {
-         if let button = self.statusBarItem.button {
-              if self.popover.isShown {
-                   self.popover.performClose(sender)
-              } else {
-                    self.popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
-                    self.popover.contentViewController?.view.window?.becomeKey()
-              }
-         }
     }
     
     func showNormalIcon() {
@@ -344,4 +410,3 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
 }
-

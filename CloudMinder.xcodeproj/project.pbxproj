@@ -8,17 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		371B140924F593AE00E12677 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B140824F593AE00E12677 /* AppDelegate.swift */; };
-		371B140B24F593AE00E12677 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B140A24F593AE00E12677 /* ContentView.swift */; };
 		371B140D24F593AF00E12677 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B140C24F593AF00E12677 /* Assets.xcassets */; };
 		371B141024F593AF00E12677 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B140F24F593AF00E12677 /* Preview Assets.xcassets */; };
 		371B141324F593AF00E12677 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 371B141124F593AF00E12677 /* Main.storyboard */; };
 		371B142024F5CE2600E12677 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371B141C24F5C71F00E12677 /* UserNotifications.framework */; };
+		37BC0B882561978100293AB4 /* GeneralPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC0B862561978100293AB4 /* GeneralPreferenceViewController.swift */; };
+		37BC0B892561978100293AB4 /* GeneralPreferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BC0B872561978100293AB4 /* GeneralPreferenceViewController.xib */; };
+		37BC0B932561A6A200293AB4 /* AdvancedPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC0B912561A6A200293AB4 /* AdvancedPreferenceViewController.swift */; };
+		37BC0B942561A6A200293AB4 /* AdvancedPreferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BC0B922561A6A200293AB4 /* AdvancedPreferenceViewController.xib */; };
+		80F1E9C43769835CFBBDE714 /* libPods-CloudMinder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238FAD9CB720AC30E3095046 /* libPods-CloudMinder.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		238FAD9CB720AC30E3095046 /* libPods-CloudMinder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CloudMinder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		371B140524F593AE00E12677 /* CloudMinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudMinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		371B140824F593AE00E12677 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		371B140A24F593AE00E12677 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		371B140C24F593AF00E12677 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		371B140F24F593AF00E12677 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		371B141224F593AF00E12677 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -26,6 +30,12 @@
 		371B141524F593AF00E12677 /* CloudMinder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CloudMinder.entitlements; sourceTree = "<group>"; };
 		371B141C24F5C71F00E12677 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		371B141E24F5C7A400E12677 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		37BC0B862561978100293AB4 /* GeneralPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralPreferenceViewController.swift; sourceTree = "<group>"; };
+		37BC0B872561978100293AB4 /* GeneralPreferenceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralPreferenceViewController.xib; sourceTree = "<group>"; };
+		37BC0B912561A6A200293AB4 /* AdvancedPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedPreferenceViewController.swift; sourceTree = "<group>"; };
+		37BC0B922561A6A200293AB4 /* AdvancedPreferenceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdvancedPreferenceViewController.xib; sourceTree = "<group>"; };
+		E6B095F107523A901584A8E6 /* Pods-CloudMinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudMinder.release.xcconfig"; path = "Target Support Files/Pods-CloudMinder/Pods-CloudMinder.release.xcconfig"; sourceTree = "<group>"; };
+		EDE982AE70A700F593C64375 /* Pods-CloudMinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudMinder.debug.xcconfig"; path = "Target Support Files/Pods-CloudMinder/Pods-CloudMinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				371B142024F5CE2600E12677 /* UserNotifications.framework in Frameworks */,
+				80F1E9C43769835CFBBDE714 /* libPods-CloudMinder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +57,7 @@
 				371B140724F593AE00E12677 /* CloudMinder */,
 				371B140624F593AE00E12677 /* Products */,
 				371B141B24F5C71F00E12677 /* Frameworks */,
+				3C10640C776AAD11BCE6B39C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,12 +73,15 @@
 			isa = PBXGroup;
 			children = (
 				371B140824F593AE00E12677 /* AppDelegate.swift */,
-				371B140A24F593AE00E12677 /* ContentView.swift */,
 				371B140C24F593AF00E12677 /* Assets.xcassets */,
 				371B141124F593AF00E12677 /* Main.storyboard */,
 				371B141424F593AF00E12677 /* Info.plist */,
 				371B141524F593AF00E12677 /* CloudMinder.entitlements */,
 				371B140E24F593AF00E12677 /* Preview Content */,
+				37BC0B862561978100293AB4 /* GeneralPreferenceViewController.swift */,
+				37BC0B872561978100293AB4 /* GeneralPreferenceViewController.xib */,
+				37BC0B912561A6A200293AB4 /* AdvancedPreferenceViewController.swift */,
+				37BC0B922561A6A200293AB4 /* AdvancedPreferenceViewController.xib */,
 			);
 			path = CloudMinder;
 			sourceTree = "<group>";
@@ -84,8 +99,18 @@
 			children = (
 				371B141E24F5C7A400E12677 /* NotificationCenter.framework */,
 				371B141C24F5C71F00E12677 /* UserNotifications.framework */,
+				238FAD9CB720AC30E3095046 /* libPods-CloudMinder.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3C10640C776AAD11BCE6B39C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EDE982AE70A700F593C64375 /* Pods-CloudMinder.debug.xcconfig */,
+				E6B095F107523A901584A8E6 /* Pods-CloudMinder.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,6 +120,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 371B141824F593AF00E12677 /* Build configuration list for PBXNativeTarget "CloudMinder" */;
 			buildPhases = (
+				903A88FB47E785078400B613 /* [CP] Check Pods Manifest.lock */,
 				371B140124F593AE00E12677 /* Sources */,
 				371B140224F593AE00E12677 /* Frameworks */,
 				371B140324F593AE00E12677 /* Resources */,
@@ -115,7 +141,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Dana Basken";
 				TargetAttributes = {
 					371B140424F593AE00E12677 = {
@@ -146,7 +172,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37BC0B892561978100293AB4 /* GeneralPreferenceViewController.xib in Resources */,
 				371B141324F593AF00E12677 /* Main.storyboard in Resources */,
+				37BC0B942561A6A200293AB4 /* AdvancedPreferenceViewController.xib in Resources */,
 				371B141024F593AF00E12677 /* Preview Assets.xcassets in Resources */,
 				371B140D24F593AF00E12677 /* Assets.xcassets in Resources */,
 			);
@@ -154,12 +182,38 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		903A88FB47E785078400B613 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CloudMinder-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		371B140124F593AE00E12677 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				371B140B24F593AE00E12677 /* ContentView.swift in Sources */,
+				37BC0B932561A6A200293AB4 /* AdvancedPreferenceViewController.swift in Sources */,
+				37BC0B882561978100293AB4 /* GeneralPreferenceViewController.swift in Sources */,
 				371B140924F593AE00E12677 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,6 +258,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -228,7 +283,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -264,6 +319,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -282,7 +338,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -293,9 +349,11 @@
 		};
 		371B141924F593AF00E12677 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDE982AE70A700F593C64375 /* Pods-CloudMinder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CloudMinder/CloudMinder.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 10;
@@ -319,6 +377,7 @@
 		};
 		371B141A24F593AF00E12677 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6B095F107523A901584A8E6 /* Pods-CloudMinder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CloudMinder/CloudMinder.entitlements;

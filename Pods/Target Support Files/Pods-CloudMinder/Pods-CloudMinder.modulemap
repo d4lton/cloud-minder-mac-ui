@@ -1,0 +1,6 @@
+module Pods_CloudMinder {
+  umbrella header "Pods-CloudMinder-umbrella.h"
+
+  export *
+  module * { export * }
+}
