@@ -57,7 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     
     var nodeName = ""
     var port = 2112
-    var project = "noumena-dev"
+    var project = ""
     var zone = "us-central1-a"
     var nodes: [Node] = []
     var gcloudPath = "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud"
@@ -173,17 +173,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     @objc func startAll(_ sender: Any?) {
-        print("startAll")
         self.startStopAll(action: "start")
     }
 
     @objc func stopAll(_ sender: Any?) {
-        print("stopAll")
         self.startStopAll(action: "stop")
     }
 
     func startStopAll(action: String) {
-        print("startStopAll")
         let queue = DispatchQueue(label: "com.basken.CloudMinder.startStopQueue")
         for node in nodes {
             queue.async { [self] in
@@ -231,36 +228,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         }
     }
     
-    func showActivityIcon(percent: Double) {
+    func showSettingsIcon() {
         DispatchQueue.main.async {
-            let level = Int(percent) / 10
-            print("activity level: \(level)")
-            switch (level) {
-            case 0:
-                self.statusBarItem.button!.image = NSImage(named: "CloudIdle")
-                break
-            case 1:
-                self.statusBarItem.button!.image = NSImage(named: "CloudOne")
-                break
-            case 2:
-                self.statusBarItem.button!.image = NSImage(named: "CloudTwo")
-                break
-            case 3:
-                self.statusBarItem.button!.image = NSImage(named: "CloudThree")
-                break
-            case 4:
-                self.statusBarItem.button!.image = NSImage(named: "CloudFour")
-                break
-            case 5:
-                self.statusBarItem.button!.image = NSImage(named: "CloudFive")
-                break
-            default:
-                self.statusBarItem.button!.image = NSImage(named: "CloudSix")
-                break
-            }
+            self.statusBarItem.button!.image = NSImage(named: "IconSettings")
         }
     }
-    
+
     func showNotification(message: String, node: Node, immediate: Bool = false) {
         let now = Date()
         if (lastNotification != nil && !immediate) {
@@ -324,6 +297,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
             completion(results)
         }
     }
+    
+    func settingsAreValid() -> Bool {
+        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
+        if (userDefaults?.string(forKey: "nodeName") == "") {
+            return false
+        }
+        if (userDefaults?.string(forKey: "project") == "") {
+            return false
+        }
+        return true
+    }
 
     func startTimer() {
         // update the IP addresses every 10 minutes
@@ -331,40 +315,44 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         // check to see if the nodes are up and underutilized every 30 seconds
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { timer in
             self.refreshConfiguration()
-            self.getNodeStatuses { statuses in
-                var overallState = "IDLE"
-                print("\(statuses)")
-                for status in statuses {
-                    if (status.state == "UNDERUTILIZED") {
-                        self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized, consider shutting it down.", node: status.node!)
-                    }
-                    if (status.state == "LONG_RUNNING") {
-                        self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours, consider shutting it down.", node: status.node!)
-                    }
-                    if (status.node?.status == "RUNNING") {
-                        if (status.state == "ERROR") {
-                            overallState = "ERROR"
-                        } else {
-                            if (overallState != "ERROR") {
-                                overallState = "RUNNING"
+            if (self.settingsAreValid()) {
+                self.getNodeStatuses { statuses in
+                    var overallState = "IDLE"
+                    print("\(statuses)")
+                    for status in statuses {
+                        if (status.state == "UNDERUTILIZED") {
+                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized, consider shutting it down.", node: status.node!)
+                        }
+                        if (status.state == "LONG_RUNNING") {
+                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours, consider shutting it down.", node: status.node!)
+                        }
+                        if (status.node?.status == "RUNNING") {
+                            if (status.state == "ERROR") {
+                                overallState = "ERROR"
+                            } else {
+                                if (overallState != "ERROR") {
+                                    overallState = "RUNNING"
+                                }
                             }
                         }
                     }
+                    switch (overallState) {
+                    case "IDLE":
+                        self.showOffIcon()
+                        break
+                    case "ERROR":
+                        self.showErrorIcon()
+                        break
+                    case "RUNNING":
+                        self.showNormalIcon()
+                        break
+                    default:
+                        break
+                    }
+                    print("overall state: \(overallState)")
                 }
-                switch (overallState) {
-                case "IDLE":
-                    self.showOffIcon()
-                    break
-                case "ERROR":
-                    self.showErrorIcon()
-                    break
-                case "RUNNING":
-                    self.showNormalIcon()
-                    break
-                default:
-                    break
-                }
-                print("overall state: \(overallState)")
+            } else {
+                self.showSettingsIcon()
             }
         }
     }
