@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="AdvancedPreferenceViewController" customModule="CloudMinder" customModuleProvider="target">
             <connections>
                 <outlet property="gcloudPathTextField" destination="twz-17-eOk" id="90P-Iq-QVH"/>
+                <outlet property="gcloudValidPathImageCell" destination="aug-rk-77K" id="oUQ-rh-L2E"/>
                 <outlet property="view" destination="c22-O7-iKe" id="ZQe-UH-LCX"/>
             </connections>
         </customObject>
@@ -26,15 +27,17 @@
                     <rows>
                         <gridRow id="83g-cd-Pi0"/>
                         <gridRow yPlacement="top" id="gSl-iE-cwq"/>
+                        <gridRow id="JpQ-9i-VOr"/>
                     </rows>
                     <columns>
                         <gridColumn xPlacement="trailing" id="GGj-JC-w4E"/>
                         <gridColumn xPlacement="leading" id="cs9-fm-l2F"/>
+                        <gridColumn id="QRm-yn-qoN"/>
                     </columns>
                     <gridCells>
                         <gridCell row="83g-cd-Pi0" column="GGj-JC-w4E" id="VLU-xl-l0t">
                             <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Inf-Di-0wp">
-                                <rect key="frame" x="-2" y="374" width="77" height="16"/>
+                                <rect key="frame" x="-2" y="373" width="77" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="gcloud path" id="se9-d0-v5a">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -55,10 +58,16 @@
                                 </connections>
                             </textField>
                         </gridCell>
+                        <gridCell row="83g-cd-Pi0" column="QRm-yn-qoN" id="B1M-bb-9Eq">
+                            <imageView key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VZp-Sc-LNl">
+                                <rect key="frame" x="428" y="370" width="22" height="22"/>
+                                <imageCell key="cell" controlSize="mini" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" image="IconOff" id="aug-rk-77K"/>
+                            </imageView>
+                        </gridCell>
                         <gridCell row="gSl-iE-cwq" column="GGj-JC-w4E" id="IXl-mV-waK"/>
                         <gridCell row="gSl-iE-cwq" column="cs9-fm-l2F" id="yFx-k0-cPt">
                             <textField key="contentView" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="c2E-pX-Fuo">
-                                <rect key="frame" x="81" y="335" width="371" height="28"/>
+                                <rect key="frame" x="81" y="334" width="339" height="28"/>
                                 <textFieldCell key="cell" selectable="YES" title="Where the gcloud binary is located, typically in the google-cloud-sdk/bin directory in your home directory" id="D9h-tf-tnk">
                                     <font key="font" metaFont="message" size="11"/>
                                     <color key="textColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
@@ -66,6 +75,10 @@
                                 </textFieldCell>
                             </textField>
                         </gridCell>
+                        <gridCell row="gSl-iE-cwq" column="QRm-yn-qoN" id="WGV-Kb-zOX"/>
+                        <gridCell row="JpQ-9i-VOr" column="GGj-JC-w4E" id="ecu-rk-QUc"/>
+                        <gridCell row="JpQ-9i-VOr" column="cs9-fm-l2F" id="nbJ-XH-Z7S"/>
+                        <gridCell row="JpQ-9i-VOr" column="QRm-yn-qoN" id="7fC-h6-BWI"/>
                     </gridCells>
                 </gridView>
             </subviews>
@@ -79,4 +92,7 @@
             <point key="canvasLocation" x="164" y="340.5"/>
         </customView>
     </objects>
+    <resources>
+        <image name="IconOff" width="22" height="22"/>
+    </resources>
 </document>
