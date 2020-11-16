@@ -43,17 +43,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     struct NodeStatus: Codable {
         let node: Node?
         let state: String?
+        var error: String = ""
         let uptimeHours: Double?
         let loadPercent: Double?
     }
 
-    var window: NSWindow!
     var statusBarItem: NSStatusItem!
     var timer: Timer!
     var center: UNUserNotificationCenter!
     var lastNotification: Date!
     var availableVersion: String = ""
     var menu: NSMenu!
+    var statusViewController: StatusViewController!
+    var statusWindowStoryboard: NSStoryboard!
+    var statusWindowController: NSWindowController!
     
     var nodeName = ""
     var port = 2112
@@ -71,10 +74,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSApp.activate(ignoringOtherApps: true)
+        createStatusWindowController()
         refreshConfiguration()
         setUpMenuButton()
         setUpNotifications()
         startTimer()
+    }
+    
+    func createStatusWindowController() {
+        statusWindowStoryboard = NSStoryboard(name: NSStoryboard.Name("Status"), bundle: nil)
+        statusWindowController = statusWindowStoryboard.instantiateController(withIdentifier: "WindowController") as? NSWindowController
     }
     
     func refreshConfiguration() {
@@ -142,7 +151,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     func setUpNodes() {
         nodes = getNodes(name: nodeName)
         getAvailableVersion()
-        // TODO: update menu
+        updateStatusView()
         print(nodes)
     }
     
@@ -163,6 +172,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         menu.addItem(NSMenuItem(title: "Stop All", action: #selector(AppDelegate.stopAll(_:)), keyEquivalent: "-"))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Settings...", action: #selector(AppDelegate.settings(_:)), keyEquivalent: ","))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Status...", action: #selector(AppDelegate.status(_:)), keyEquivalent: ";"))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit Quotes", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
@@ -198,6 +209,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     @objc func settings(_ sender: Any?) {
         print("settings")
         self.preferencesWindowController.show()
+    }
+
+    @objc func status(_ sender: Any?) {
+        self.statusWindowController.showWindow(self)
+        NSApp.activate(ignoringOtherApps: true)
+        self.updateStatusView()
+    }
+    
+    func updateStatusView(statuses: [NodeStatus] = []) {
+        print("updateStatusView")
+        let controller = self.statusWindowController.contentViewController as! StatusViewController
+        if (controller.isViewLoaded) {
+            controller.setNodes(nodes: self.nodes)
+            controller.setNodeStatuses(statuses: statuses)
+        }
     }
 
     func setUpNotifications() {
@@ -274,10 +300,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                     }
                     completion(NodeStatus(node: node, state: state, uptimeHours: uptimeHours, loadPercent: loadPercent))
                 } else {
-                    completion(NodeStatus(node: node, state: "ERROR", uptimeHours: 0.0, loadPercent: 0.0))
+                    completion(NodeStatus(node: node, state: "ERROR", error: "API_ERROR", uptimeHours: 0.0, loadPercent: 0.0))
                 }
             } else {
-                completion(NodeStatus(node: node, state: "ERROR", uptimeHours: 0.0, loadPercent: 0.0))
+                completion(NodeStatus(node: node, state: "ERROR", error: "NO_API", uptimeHours: 0.0, loadPercent: 0.0))
             }
         }
         task.resume()
@@ -317,6 +343,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
             self.refreshConfiguration()
             if (self.settingsAreValid()) {
                 self.getNodeStatuses { statuses in
+                    self.updateStatusView(statuses: statuses)
                     var overallState = "IDLE"
                     print("\(statuses)")
                     for status in statuses {
