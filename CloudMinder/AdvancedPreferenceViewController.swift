@@ -30,7 +30,6 @@ class AdvancedPreferenceViewController: NSViewController, PreferencePane {
     }
 
     @IBAction func gcloudPathAction(_ sender: Any) {
-        print("gcloudPathAction")
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(gcloudPathTextField.stringValue, forKey: "gcloudPath")
     }

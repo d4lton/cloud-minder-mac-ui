@@ -207,7 +207,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     @objc func settings(_ sender: Any?) {
-        print("settings")
         self.preferencesWindowController.show()
     }
 
@@ -218,7 +217,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     func updateStatusView(statuses: [NodeStatus] = []) {
-        print("updateStatusView")
         let controller = self.statusWindowController.contentViewController as! StatusViewController
         if (controller.isViewLoaded) {
             controller.setNodes(nodes: self.nodes)
@@ -292,11 +290,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                     let uptimeHours = status!["uptime"] as! Double / 3600.0
                     let loadPercent = status!["loadpercent"] as! Double
                     var state = "RUNNING"
-                    if (uptimeHours >= 1.0 && loadPercent < 1.0) {
-                        state = "UNDERUTILIZED"
-                    }
-                    if (uptimeHours >= 8) {
-                        state = "LONG_RUNNING"
+                    if (status!["state"] != nil) {
+                        state = status!["state"] as! String
+                    } else {
+                        if (uptimeHours >= 1.0 && loadPercent < 1.0) {
+                            state = "IDLE"
+                        }
+                        if (uptimeHours >= 8) {
+                            state = "LONG_RUNNING"
+                        }
                     }
                     completion(NodeStatus(node: node, state: state, uptimeHours: uptimeHours, loadPercent: loadPercent))
                 } else {
@@ -347,11 +349,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                     var overallState = "IDLE"
                     print("\(statuses)")
                     for status in statuses {
-                        if (status.state == "UNDERUTILIZED") {
-                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized, consider shutting it down.", node: status.node!)
+                        if (status.state == "IDLE") {
+                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized", node: status.node!)
                         }
                         if (status.state == "LONG_RUNNING") {
-                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours, consider shutting it down.", node: status.node!)
+                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours", node: status.node!)
                         }
                         if (status.node?.status == "RUNNING") {
                             if (status.state == "ERROR") {

@@ -28,8 +28,6 @@ class StatusViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
     }
     
     func setNodeStatuses(statuses: [AppDelegate.NodeStatus]) {
-        print("setNodeStatuses")
-        print(statuses)
         if (statuses.count > 0) {
             self.statuses = statuses
             statusTable.reloadData()

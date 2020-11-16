@@ -34,19 +34,16 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
     }
     
     @IBAction func projectAction(_ sender: Any) {
-        print("projectAction")
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(projectTextField.stringValue, forKey: "project")
     }
 
     @IBAction func zoneAction(_ sender: Any) {
-        print("zoneAction")
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(zoneTextField.stringValue, forKey: "zone")
     }
     
     @IBAction func prefixAction(_ sender: Any) {
-        print("prefixAction")
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(prefixTextField.stringValue, forKey: "nodeName")
     }
