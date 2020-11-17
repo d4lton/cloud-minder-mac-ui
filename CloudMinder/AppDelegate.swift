@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     var timer: Timer!
     var center: UNUserNotificationCenter!
     var lastNotification: Date!
-    var availableVersion: String = ""
+    var newVersionNotificationSent = false
     var menu: NSMenu!
     var statusViewController: StatusViewController!
     var statusWindowStoryboard: NSStoryboard!
@@ -76,6 +76,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     var zones: [Zone] = []
     var projects: [Project] = []
     var gcloudPath = "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud"
+    let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
 
     lazy var preferencesWindowController = PreferencesWindowController(
         preferencePanes: [
@@ -116,8 +117,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func loadSettings() {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
-
         if (userDefaults?.value(forKey: "nodeName") != nil) {
             nodeName = userDefaults!.string(forKey: "nodeName")!
         } else {
@@ -147,13 +146,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         } else {
             userDefaults!.set(port, forKey: "port")
         }
+
+        if (userDefaults?.value(forKey: "checkVersion") == nil) {
+            userDefaults!.set(true, forKey: "checkVersion")
+        }
     }
     
-    func getAvailableVersion() {
+    func checkAvailableVersion() {
+        if (userDefaults?.bool(forKey: "checkVersion") == false) { return }
+        if (newVersionNotificationSent) { return }
         let url = URL(string: "https://api.github.com/repos/d4lton/cloud-minder-mac-ui/releases/latest")
         let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
             let status = String(data: data!, encoding: .utf8)?.convertToDictionary()
-            self.availableVersion = status!["name"] as! String
+            let availableVersion = status!["name"] as! String
+            let build = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as! String
+            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+            let currentVersion = "\(version).\(build)"
+            print("current: \(currentVersion), available \(availableVersion)")
+            if (currentVersion != availableVersion) {
+                self.showNotification(message: "A new version of CloudMinder is available: \(availableVersion)", immediate: true)
+                self.newVersionNotificationSent = true
+            }
         }
         task.resume()
     }
@@ -190,7 +203,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func setUpNodes() {
         nodes = getNodes(name: nodeName)
-        getAvailableVersion()
         updateStatusView()
         print(nodes)
     }
@@ -298,7 +310,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         }
     }
 
-    func showNotification(message: String, node: Node, immediate: Bool = false) {
+    func showNotification(message: String, node: Node? = nil, immediate: Bool = false) {
         let now = Date()
         if (lastNotification != nil && !immediate) {
             let difference = now.timeIntervalSince(lastNotification)
@@ -309,7 +321,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let content = UNMutableNotificationContent()
         content.title = "CloudMinder"
         content.body = message
-        content.userInfo = ["address": node.networkInterfaces?.first?.networkIP as Any]
+        content.userInfo = ["address": node?.networkInterfaces?.first?.networkIP as Any]
         if (!immediate) {
             content.categoryIdentifier = "alarm"
             content.sound = UNNotificationSound.default
@@ -367,7 +379,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     func settingsAreValid() -> Bool {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         if (userDefaults?.string(forKey: "nodeName") == "") {
             return false
         }
@@ -378,8 +389,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func startTimer() {
-        // update the IP addresses every 10 minutes
-        Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { timer in self.setUpNodes() }
+
+        // update the node info every 10 minutes
+        Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { timer in
+            self.setUpNodes()
+            self.checkAvailableVersion()
+        }
+
         // check to see if the nodes are up and underutilized every 30 seconds
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { timer in
             self.refreshConfiguration()
@@ -424,6 +440,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                 self.showSettingsIcon()
             }
         }
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

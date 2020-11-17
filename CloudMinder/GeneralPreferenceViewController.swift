@@ -15,12 +15,15 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
     let preferencePaneIdentifier = Preferences.PaneIdentifier.general
     let preferencePaneTitle = "General"
     let toolbarItemIcon = NSImage(systemSymbolName: "gearshape", accessibilityDescription: "General preferences")!
+    let appDelegate = NSApplication.shared.delegate as! AppDelegate
+    let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
 
     override var nibName: NSNib.Name? { "GeneralPreferenceViewController" }
 
     @IBOutlet weak var projectPopUpButton: NSPopUpButton!
     @IBOutlet weak var prefixTextField: NSTextField!
     @IBOutlet weak var zonePopUpButton: NSPopUpButton!
+    @IBOutlet weak var checkVersionButton: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,39 +36,39 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         projectPopUpAction(self)
         zonePopUpAction(self)
         prefixAction(self)
+        checkVersionAction(self)
     }
     
     func setUpZoneButton() {
-        let appDelegate = NSApplication.shared.delegate as! AppDelegate
         appDelegate.zones.forEach { zone in
             zonePopUpButton.addItem(withTitle: zone.name!)
         }
     }
     
     func setUpProjectButton() {
-        let appDelegate = NSApplication.shared.delegate as! AppDelegate
         appDelegate.projects.forEach { project in
             projectPopUpButton.addItem(withTitle: project.projectId!)
         }
     }
     
     @IBAction func projectPopUpAction(_ sender: Any) {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(projectPopUpButton.selectedItem!.title, forKey: "project")
     }
 
     @IBAction func zonePopUpAction(_ sender: Any) {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(zonePopUpButton.selectedItem!.title, forKey: "zone")
     }
     
     @IBAction func prefixAction(_ sender: Any) {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(prefixTextField.stringValue, forKey: "nodeName")
     }
-    
+
+    @IBAction func checkVersionAction(_ sender: Any) {
+        let value = checkVersionButton.state == .on ? true : false
+        userDefaults!.set(value, forKey: "checkVersion")
+    }
+
     func loadSettings() {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         if (userDefaults!.value(forKey: "project") != nil) {
             projectPopUpButton.selectItem(withTitle: userDefaults!.string(forKey: "project")!)
         }
@@ -74,6 +77,9 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
         }
         if (userDefaults!.value(forKey: "nodeName") != nil) {
             prefixTextField.stringValue = userDefaults!.string(forKey: "nodeName")!
+        }
+        if (userDefaults!.value(forKey: "checkVersion") != nil) {
+            checkVersionButton.state = (userDefaults!.bool(forKey: "checkVersion")) ? .on : .off
         }
     }
     

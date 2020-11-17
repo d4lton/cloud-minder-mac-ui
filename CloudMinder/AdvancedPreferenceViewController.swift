@@ -15,6 +15,7 @@ class AdvancedPreferenceViewController: NSViewController, PreferencePane {
     let preferencePaneIdentifier = Preferences.PaneIdentifier.advanced
     let preferencePaneTitle = "Advanced"
     let toolbarItemIcon = NSImage(systemSymbolName: "gearshape.2", accessibilityDescription: "Advanced preferences")!
+    let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
 
     override var nibName: NSNib.Name? { "AdvancedPreferenceViewController" }
 
@@ -60,12 +61,10 @@ class AdvancedPreferenceViewController: NSViewController, PreferencePane {
     }
 
     @IBAction func gcloudPathAction(_ sender: Any) {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         userDefaults!.set(gcloudPathTextField.stringValue, forKey: "gcloudPath")
     }
 
     func loadSettings() {
-        let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         if (userDefaults!.value(forKey: "gcloudPath") != nil) {
             gcloudPathTextField.stringValue = userDefaults!.string(forKey: "gcloudPath")!
         }
