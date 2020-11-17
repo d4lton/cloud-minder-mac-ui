@@ -47,6 +47,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let uptimeHours: Double?
         let loadPercent: Double?
     }
+    
+    struct Zone: Codable, Hashable {
+        let name: String?
+        let status: String?
+    }
+    
+    struct Project: Codable, Hashable {
+        let projectId: String?
+        let name: String?
+    }
 
     var statusBarItem: NSStatusItem!
     var timer: Timer!
@@ -63,6 +73,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     var project = ""
     var zone = "us-central1-a"
     var nodes: [Node] = []
+    var zones: [Zone] = []
+    var projects: [Project] = []
     var gcloudPath = "\(NSHomeDirectory())/google-cloud-sdk/bin/gcloud"
 
     lazy var preferencesWindowController = PreferencesWindowController(
@@ -75,10 +87,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSApp.activate(ignoringOtherApps: true)
         createStatusWindowController()
-        refreshConfiguration()
+        refresh()
         setUpMenuButton()
         setUpNotifications()
         startTimer()
+    }
+    
+    func refresh() {
+        print("starting refresh...")
+        zones = getZones()
+        projects = getProjects()
+        refreshConfiguration()
+        print("refresh done.")
     }
     
     func createStatusWindowController() {
@@ -137,7 +157,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         }
         task.resume()
     }
-
+    
+    func getZones() -> [Zone] {
+        let response = exec(execPath: gcloudPath, arguments: "compute", "zones", "list", "--format=json(name,status)")
+        do {
+            return try JSONDecoder().decode([Zone].self, from: Data(response.utf8)).filter { $0.status == "UP" }.sorted { $0.name! < $1.name! }
+        } catch let error {
+            print(error)
+        }
+        return []
+    }
+    
+    func getProjects() -> [Project] {
+        let response = exec(execPath: gcloudPath, arguments: "projects", "list", "--format=json(projectId,name)")
+        do {
+            return try JSONDecoder().decode([Project].self, from: Data(response.utf8)).sorted { $0.projectId! < $1.projectId! }
+        } catch let error {
+            print(error)
+        }
+        return []
+    }
+    
     func getNodes(name: String) -> [Node] {
         let response = exec(execPath: gcloudPath, arguments: "compute", "instances", "list", "--project=\(project)", "--format=json(name,status,networkInterfaces[].networkIP)")
         do {
@@ -175,7 +215,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Status...", action: #selector(AppDelegate.status(_:)), keyEquivalent: ";"))
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Quit Quotes", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit CloudMinder", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
     
     @objc func about(_ sender: Any?) {

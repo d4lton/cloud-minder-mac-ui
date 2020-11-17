@@ -18,29 +18,45 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
 
     override var nibName: NSNib.Name? { "GeneralPreferenceViewController" }
 
-    @IBOutlet weak var projectTextField: NSTextField!
-    @IBOutlet weak var zoneTextField: NSTextField!
+    @IBOutlet weak var projectPopUpButton: NSPopUpButton!
     @IBOutlet weak var prefixTextField: NSTextField!
-
+    @IBOutlet weak var zonePopUpButton: NSPopUpButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpZoneButton()
+        setUpProjectButton()
         loadSettings()
     }
     
     override func viewWillDisappear() {
-        projectAction(self)
-        zoneAction(self)
+        projectPopUpAction(self)
+        zonePopUpAction(self)
         prefixAction(self)
     }
     
-    @IBAction func projectAction(_ sender: Any) {
+    func setUpZoneButton() {
+        let appDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.zones.forEach { zone in
+            zonePopUpButton.addItem(withTitle: zone.name!)
+        }
+    }
+    
+    func setUpProjectButton() {
+        let appDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.projects.forEach { project in
+            projectPopUpButton.addItem(withTitle: project.projectId!)
+        }
+    }
+    
+    @IBAction func projectPopUpAction(_ sender: Any) {
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
-        userDefaults!.set(projectTextField.stringValue, forKey: "project")
+        userDefaults!.set(projectPopUpButton.selectedItem!.title, forKey: "project")
     }
 
-    @IBAction func zoneAction(_ sender: Any) {
+    @IBAction func zonePopUpAction(_ sender: Any) {
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
-        userDefaults!.set(zoneTextField.stringValue, forKey: "zone")
+        userDefaults!.set(zonePopUpButton.selectedItem!.title, forKey: "zone")
     }
     
     @IBAction func prefixAction(_ sender: Any) {
@@ -51,10 +67,10 @@ final class GeneralPreferenceViewController: NSViewController, PreferencePane {
     func loadSettings() {
         let userDefaults = UserDefaults(suiteName: "CloudMinder.settings")
         if (userDefaults!.value(forKey: "project") != nil) {
-            projectTextField.stringValue = userDefaults!.string(forKey: "project")!
+            projectPopUpButton.selectItem(withTitle: userDefaults!.string(forKey: "project")!)
         }
         if (userDefaults!.value(forKey: "zone") != nil) {
-            zoneTextField.stringValue = userDefaults!.string(forKey: "zone")!
+            zonePopUpButton.selectItem(withTitle: userDefaults!.string(forKey: "zone")!)
         }
         if (userDefaults!.value(forKey: "nodeName") != nil) {
             prefixTextField.stringValue = userDefaults!.string(forKey: "nodeName")!
