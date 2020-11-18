@@ -57,6 +57,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         let projectId: String?
         let name: String?
     }
+    
+    struct ExecResult {
+        let success: Bool?
+        let output: String?
+    }
 
     var statusBarItem: NSStatusItem!
     var timer: Timer!
@@ -173,30 +178,42 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     
     func getZones() -> [Zone] {
         let response = exec(execPath: gcloudPath, arguments: "compute", "zones", "list", "--format=json(name,status)")
-        do {
-            return try JSONDecoder().decode([Zone].self, from: Data(response.utf8)).filter { $0.status == "UP" }.sorted { $0.name! < $1.name! }
-        } catch let error {
-            print(error)
+        if (response.success!) {
+            do {
+                return try JSONDecoder().decode([Zone].self, from: Data(response.output!.utf8)).filter { $0.status == "UP" }.sorted { $0.name! < $1.name! }
+            } catch let error {
+                print(error)
+            }
+        } else {
+            print(response.output!)
         }
         return []
     }
     
     func getProjects() -> [Project] {
         let response = exec(execPath: gcloudPath, arguments: "projects", "list", "--format=json(projectId,name)")
-        do {
-            return try JSONDecoder().decode([Project].self, from: Data(response.utf8)).sorted { $0.projectId! < $1.projectId! }
-        } catch let error {
-            print(error)
+        if (response.success!) {
+            do {
+                return try JSONDecoder().decode([Project].self, from: Data(response.output!.utf8)).sorted { $0.projectId! < $1.projectId! }
+            } catch let error {
+                print(error)
+            }
+        } else {
+            print(response.output!)
         }
         return []
     }
     
     func getNodes(name: String) -> [Node] {
         let response = exec(execPath: gcloudPath, arguments: "compute", "instances", "list", "--project=\(project)", "--format=json(name,status,networkInterfaces[].networkIP)")
-        do {
-            return try JSONDecoder().decode([Node].self, from: Data(response.utf8)).filter { ($0.name?.starts(with: name))! }
-        } catch let error {
-            print(error)
+        if (response.success!) {
+            do {
+                return try JSONDecoder().decode([Node].self, from: Data(response.output!.utf8)).filter { ($0.name?.starts(with: name))! }
+            } catch let error {
+                print(error)
+            }
+        } else {
+            print(response.output!)
         }
         return []
     }
@@ -245,15 +262,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     func startStopAll(action: String) {
         let queue = DispatchQueue(label: "com.basken.CloudMinder.startStopQueue")
+        let group = DispatchGroup()
         for node in nodes {
+            group.enter()
             queue.async { [self] in
                 let result = exec(execPath: gcloudPath, arguments: "compute", "instances", action, "--project=\(project)", "--zone=\(zone)", node.name!)
-                print(result)
-                if (action == "start") {
-                    showNotification(message: "Node \(node.name ?? "<unknown>") has been started.", node: node, immediate: true)
+                if (result.success!) {
+                    if (action == "start") {
+                        showNotification(message: "Node \(node.name!) has been started.", node: node, immediate: true)
+                    } else {
+                        showNotification(message: "Node \(node.name!) has been stopped.", node: node, immediate: true)
+                    }
                 } else {
-                    showNotification(message: "Node \(node.name ?? "<unknown>") has been stopped.", node: node, immediate: true)
+                    showNotification(message: "Error attempting to \(action) \(node.name!).", node: node, immediate: true)
+                    print(result.output!)
                 }
+                group.leave()
+            }
+        }
+        group.notify(queue: queue) {
+            DispatchQueue.main.async {
+                self.setUpNodes()
             }
         }
     }
@@ -472,15 +501,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         completionHandler()
     }
 
-    func exec(execPath: String, arguments: String...) -> String {
+    func exec(execPath: String, arguments: String...) -> ExecResult {
         let process = Process()
         process.launchPath = execPath
         process.arguments = arguments
         let stdout = Pipe()
+        let stderr = Pipe()
         process.standardOutput = stdout
+        process.standardError = stderr
         process.launch()
         process.waitUntilExit()
-        return String(data: stdout.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+        if (process.terminationStatus == 0) {
+            return ExecResult(success: true, output: String(data: stdout.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? "")
+        } else {
+            return ExecResult(success: false, output: String(data: stderr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? "")
+        }
     }
 
 }
