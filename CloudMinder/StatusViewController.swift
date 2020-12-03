@@ -61,7 +61,7 @@ class StatusViewController: NSViewController, NSTableViewDelegate, NSTableViewDa
 
             let cellIdentifier = NSUserInterfaceItemIdentifier(rawValue: "statecell")
             guard let cellView = tableView.makeView(withIdentifier: cellIdentifier, owner: self) as? NSTableCellView else { return nil }
-            var state = nodeStatus?.state ?? ""
+            var state = nodeStatus?.state ?? "<updating>"
             if (state == "ERROR") {
                 cellView.textField?.textColor = NSColor.red
                 state = nodeStatus?.error ?? "ERROR"

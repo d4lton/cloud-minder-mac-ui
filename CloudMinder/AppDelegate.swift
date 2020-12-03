@@ -64,7 +64,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     var statusBarItem: NSStatusItem!
-    var timer: Timer!
     var center: UNUserNotificationCenter!
     var lastNotification: Date!
     var newVersionNotificationSent = false
@@ -104,6 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         zones = getZones()
         projects = getProjects()
         refreshConfiguration()
+        updateNodeStatuses()
         print("refresh done.")
     }
     
@@ -386,7 +386,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                     completion(NodeStatus(node: node, state: "ERROR", error: "API_ERROR", uptimeHours: 0.0, loadPercent: 0.0))
                 }
             } else {
-                completion(NodeStatus(node: node, state: "ERROR", error: "NO_API", uptimeHours: 0.0, loadPercent: 0.0))
+                if (node.status == "TERMINATED") {
+                    completion(NodeStatus(node: node, state: "STOPPED", uptimeHours: 0.0, loadPercent: 0.0))
+                } else {
+                    completion(NodeStatus(node: node, state: "ERROR", error: "NO_API", uptimeHours: 0.0, loadPercent: 0.0))
+                }
             }
         }
         task.resume()
@@ -418,64 +422,72 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func startTimer() {
-
         // update the node info every 10 minutes
         Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { timer in
             self.setUpNodes()
             self.checkAvailableVersion()
         }
-
         // check to see if the nodes are up and underutilized every 30 seconds
-        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { timer in
             self.refreshConfiguration()
-            if (self.settingsAreValid()) {
-                self.getNodeStatuses { statuses in
-                    self.updateStatusView(statuses: statuses)
-                    var overallState = "IDLE"
-                    print("\(statuses)")
-                    for status in statuses {
-                        if (status.state == "IDLE") {
-                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized", node: status.node!)
-                        }
-                        if (status.state == "LONG_RUNNING") {
-                            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours", node: status.node!)
-                        }
-                        if (status.node?.status == "RUNNING") {
-                            if (status.state == "ERROR") {
-                                overallState = "ERROR"
-                            } else {
-                                if (overallState != "ERROR") {
-                                    overallState = "RUNNING"
-                                }
-                            }
-                        }
-                    }
-                    switch (overallState) {
-                    case "IDLE":
-                        self.showOffIcon()
-                        break
-                    case "ERROR":
-                        self.showErrorIcon()
-                        break
-                    case "RUNNING":
-                        self.showNormalIcon()
-                        break
-                    default:
-                        break
-                    }
-                    print("overall state: \(overallState)")
-                }
-            } else {
-                self.showSettingsIcon()
-            }
+            self.updateNodeStatuses()
         }
-
-    }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        timer?.invalidate()
     }
     
+    func showStateNotification(status: NodeStatus) {
+        if (status.state == "IDLE") {
+            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") is not being utilized", node: status.node!)
+        }
+        if (status.state == "LONG_RUNNING") {
+            self.showNotification(message: "Node \(status.node?.name ?? "<unknown>") has been up for \(Int(status.uptimeHours!)) hours", node: status.node!)
+        }
+    }
+    
+    func getOverallState(statuses: [NodeStatus]) -> String {
+        var overallState = "IDLE"
+        for status in statuses {
+            print("\(status)")
+            self.showStateNotification(status: status)
+            if (status.node?.status == "RUNNING") {
+                if (status.state == "ERROR") {
+                    overallState = "ERROR"
+                } else {
+                    if (overallState != "ERROR") {
+                        overallState = "RUNNING"
+                    }
+                }
+            }
+        }
+        return overallState
+    }
+    
+    func updateMenuBarIconForOverallState(statuses: [NodeStatus]) {
+        switch (self.getOverallState(statuses: statuses)) {
+        case "IDLE", "STOPPED":
+            self.showOffIcon()
+            break
+        case "ERROR":
+            self.showErrorIcon()
+            break
+        case "RUNNING":
+            self.showNormalIcon()
+            break
+        default:
+            break
+        }
+    }
+    
+    func updateNodeStatuses() {
+        if (self.settingsAreValid()) {
+            self.getNodeStatuses { statuses in
+                self.updateStatusView(statuses: statuses)
+                self.updateMenuBarIconForOverallState(statuses: statuses)
+            }
+        } else {
+            self.showSettingsIcon()
+        }
+    }
+
     func powerOff(address: String) {
         let url = URL(string: "http://\(address):\(port)/poweroff")
         var request = URLRequest(url: url!)
